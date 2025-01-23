@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -30,8 +31,8 @@ public class SecurityController {
 	}
 
 	@GetMapping("/users")
-	public List<UserTable> getUsers(){
-		return service.findAll();
+	public ResponseEntity<List<UserTable>> getUsers(){
+		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/token")
@@ -41,8 +42,7 @@ public class SecurityController {
 	}
 	@PostMapping("/register")
 	public ResponseEntity<String> register(@RequestBody List<UserTable> users){
-		System.out.println("========================");
-		log.info(users.toString());
+
 		service.save(users);
 //		return new ResponseEntity<>("Added", HttpStatus.CREATED);
 		return ResponseEntity.status(HttpStatus.CREATED).body("User added successfully.");

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,16 +32,18 @@ public class SecurityConfig {
 		return provider;
 	}
 
-		@Bean
-		public SecurityFilterChain setSecurity(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain setSecurity(HttpSecurity http) throws Exception {
 
-			http
-                    .authorizeHttpRequests(request -> request.anyRequest().authenticated())
-					.formLogin(Customizer.withDefaults())
-					.httpBasic(Customizer.withDefaults())
-					;
-			return	http.build();
-		}
+		http
+				.csrf(customezer -> customezer.disable())
+				.authorizeHttpRequests(request -> request.anyRequest().authenticated())
+				.formLogin(Customizer.withDefaults())
+				.httpBasic(Customizer.withDefaults())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				;
+		return	http.build();
+	}
 
 
 

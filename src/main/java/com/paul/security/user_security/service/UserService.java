@@ -27,7 +27,6 @@ public class UserService {
         }
 
     public List<UserTable> findAll() {
-        System.out.println("++++++++++++++++++++++++++++");
         List<UserTable> users = repo.findAll();
 
        // System.out.println(user.getUserId() + user.getPassword());
